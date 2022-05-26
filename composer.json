@@ -37,7 +37,7 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit",
+        "test": "vendor/bin/phpunit --testdox",
         "phpcs": "vendor/bin/php-cs-fixer fix"
     },
     "extra": {

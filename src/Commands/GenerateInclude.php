@@ -1,4 +1,6 @@
-<?php namespace MartinLindhe\VueInternationalizationGenerator\Commands;
+<?php
+
+namespace MartinLindhe\VueInternationalizationGenerator\Commands;
 
 use Illuminate\Console\Command;
 
@@ -44,7 +46,7 @@ class GenerateInclude extends Command
             $format = 'umd';
         }
 
-        if (!$this->isValidFormat($format)) {
+        if (! $this->isValidFormat($format)) {
             throw new \RuntimeException('Invalid format passed: ' . $format);
         }
 
@@ -90,11 +92,12 @@ class GenerateInclude extends Command
 
     /**
      * @param string $format
-     * @return boolean
+     * @return bool
      */
     private function isValidFormat($format)
     {
         $supportedFormats = ['es6', 'umd', 'json'];
+
         return in_array($format, $supportedFormats);
     }
 }

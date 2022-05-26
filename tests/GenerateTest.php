@@ -7,14 +7,13 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
     private function generateLocaleFilesFrom(array $arr)
     {
         $root = sys_get_temp_dir() . '/' . sha1(microtime(true) . mt_rand());
-        
-        if (!is_dir($root)) {
+
+        if (! is_dir($root)) {
             mkdir($root, 0777, true);
         }
 
         foreach ($arr as $key => $val) {
-
-            if (!is_dir($root . '/' . $key)) {
+            if (! is_dir($root . '/' . $key)) {
                 mkdir($root . '/' . $key);
             }
 
@@ -30,7 +29,6 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
     private function destroyLocaleFilesFrom(array $arr, $root)
     {
         foreach ($arr as $key => $val) {
-
             foreach ($val as $group => $content) {
                 $outFile = $root . '/'. $key . '/' . $group . '.php';
                 if (file_exists($outFile)) {
@@ -41,7 +39,6 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
             if (is_dir($root . '/' . $key)) {
                 rmdir($root . '/' . $key);
             }
-
         }
 
         if (is_dir($root)) {
@@ -49,21 +46,21 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    function testBasic()
+    public function testBasic()
     {
         $arr = [
             'en' => [
                 'help' => [
                     'yes' => 'yes',
                     'no' => 'no',
-                ]
+                ],
             ],
             'sv' => [
                 'help' => [
                     'yes' => 'ja',
                     'no' => 'nej',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $root = $this->generateLocaleFilesFrom($arr);
@@ -82,11 +79,12 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
             . '        }' . PHP_EOL
             . '    }' . PHP_EOL
             . '}' . PHP_EOL,
-            (new Generator([]))->generateFromPath($root));
+            (new Generator([]))->generateFromPath($root)
+        );
         $this->destroyLocaleFilesFrom($arr, $root);
     }
 
-    function testBasicES6Format()
+    public function testBasicES6Format()
     {
         $format = 'es6';
 
@@ -95,14 +93,14 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
                 'help' => [
                     'yes' => 'yes',
                     'no' => 'no',
-                ]
+                ],
             ],
             'sv' => [
                 'help' => [
                     'yes' => 'ja',
                     'no' => 'nej',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $root = $this->generateLocaleFilesFrom($arr);
@@ -121,11 +119,12 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
             . '        }' . PHP_EOL
             . '    }' . PHP_EOL
             . '}' . PHP_EOL,
-            (new Generator([]))->generateFromPath($root, $format));
+            (new Generator([]))->generateFromPath($root, $format)
+        );
         $this->destroyLocaleFilesFrom($arr, $root);
     }
 
-    function testBasicWithUMDFormat()
+    public function testBasicWithUMDFormat()
     {
         $format = 'umd';
         $arr = [
@@ -133,14 +132,14 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
                 'help' => [
                     'yes' => 'yes',
                     'no' => 'no',
-                ]
+                ],
             ],
             'sv' => [
                 'help' => [
                     'yes' => 'ja',
                     'no' => 'nej',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $root = $this->generateLocaleFilesFrom($arr);
@@ -166,11 +165,12 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
             . '}' . PHP_EOL
             . PHP_EOL
             . '})));',
-            (new Generator([]))->generateFromPath($root, $format));
+            (new Generator([]))->generateFromPath($root, $format)
+        );
         $this->destroyLocaleFilesFrom($arr, $root);
     }
 
-    function testBasicWithJSONFormat()
+    public function testBasicWithJSONFormat()
     {
         $format = 'json';
         $arr = [
@@ -178,14 +178,14 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
                 'help' => [
                     'yes' => 'yes',
                     'no' => 'no',
-                ]
+                ],
             ],
             'sv' => [
                 'help' => [
                     'yes' => 'ja',
                     'no' => 'nej',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $root = $this->generateLocaleFilesFrom($arr);
@@ -204,32 +204,33 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
             . '        }' . PHP_EOL
             . '    }' . PHP_EOL
             . '}' . PHP_EOL,
-            (new Generator([]))->generateFromPath($root, $format));
+            (new Generator([]))->generateFromPath($root, $format)
+        );
         $this->destroyLocaleFilesFrom($arr, $root);
     }
 
-    function testInvalidFormat()
+    public function testInvalidFormat()
     {
         $format = 'es5';
         $arr = [];
 
         $root = $this->generateLocaleFilesFrom($arr);
+
         try {
             (new Generator([]))->generateFromPath($root, $format);
-        } catch(RuntimeException $e) {
+        } catch (RuntimeException $e) {
             $this->assertEquals('Invalid format passed: ' . $format, $e->getMessage());
-
         }
         $this->destroyLocaleFilesFrom($arr, $root);
     }
 
-    function testBasicWithTranslationString()
+    public function testBasicWithTranslationString()
     {
         $arr = [
             'en' => [
                 'main' => [
                     'hello :name' => 'Hello :name',
-                ]
+                ],
             ],
         ];
 
@@ -242,18 +243,19 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
             . '        }' . PHP_EOL
             . '    }' . PHP_EOL
             . '}' . PHP_EOL,
-            (new Generator([]))->generateFromPath($root));
+            (new Generator([]))->generateFromPath($root)
+        );
         $this->destroyLocaleFilesFrom($arr, $root);
     }
 
-    function testBasicWithEscapedTranslationString()
+    public function testBasicWithEscapedTranslationString()
     {
         $arr = [
             'en' => [
                 'main' => [
                     'hello :name' => 'Hello :name',
                     'time test 10!:00' => 'Time test 10!:00',
-                ]
+                ],
             ],
         ];
 
@@ -267,38 +269,39 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
             . '        }' . PHP_EOL
             . '    }' . PHP_EOL
             . '}' . PHP_EOL,
-            (new Generator([]))->generateFromPath($root));
+            (new Generator([]))->generateFromPath($root)
+        );
         $this->destroyLocaleFilesFrom($arr, $root);
     }
 
-    function testBasicWithVendor()
+    public function testBasicWithVendor()
     {
         $arr = [
             'en' => [
                 'help' => [
                     'yes' => 'yes',
                     'no' => 'no',
-                ]
+                ],
             ],
             'sv' => [
                 'help' => [
                     'yes' => 'ja',
                     'no' => 'nej',
-                ]
+                ],
             ],
             'vendor' => [
                 'test-vendor' => [
                     'en' => [
                         'test-lang' => [
-                            'maybe' => 'maybe'
-                        ]
+                            'maybe' => 'maybe',
+                        ],
                     ],
                     'sv' => [
                         'test-lang' => [
-                            'maybe' => 'kanske'
-                        ]
-                    ]
-                ]
+                            'maybe' => 'kanske',
+                        ],
+                    ],
+                ],
             ],
         ];
 
@@ -333,26 +336,27 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
             . '        }' . PHP_EOL
             . '    }' . PHP_EOL
             . '}' . PHP_EOL,
-            (new Generator([]))->generateFromPath($root, 'es6', true));
+            (new Generator([]))->generateFromPath($root, 'es6', true)
+        );
 
         $this->destroyLocaleFilesFrom($arr, $root);
     }
 
-    function testBasicWithVuexLib()
+    public function testBasicWithVuexLib()
     {
         $arr = [
             'en' => [
                 'help' => [
                     'yes' => 'yes',
                     'no' => 'no',
-                ]
+                ],
             ],
             'sv' => [
                 'help' => [
                     'yes' => 'ja',
                     'no' => 'nej',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $root = $this->generateLocaleFilesFrom($arr);
@@ -372,12 +376,13 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
             . '        }' . PHP_EOL
             . '    }' . PHP_EOL
             . '}' . PHP_EOL,
-            (new Generator([]))->generateFromPath($root));
+            (new Generator([]))->generateFromPath($root)
+        );
 
         $this->destroyLocaleFilesFrom($arr, $root);
     }
 
-    function testNamed()
+    public function testNamed()
     {
         $arr = [
             'en' => [
@@ -385,9 +390,9 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
                     'yes' => 'see :link y :lonk',
                     'no' => [
                         'one' => 'see :link',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
 
         $root = $this->generateLocaleFilesFrom($arr);
@@ -403,12 +408,13 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
             . '        }' . PHP_EOL
             . '    }' . PHP_EOL
             . '}' . PHP_EOL,
-            (new Generator([]))->generateFromPath($root));
+            (new Generator([]))->generateFromPath($root)
+        );
 
         $this->destroyLocaleFilesFrom($arr, $root);
     }
 
-    function testNamedWithEscaped()
+    public function testNamedWithEscaped()
     {
         $arr = [
             'en' => [
@@ -416,9 +422,9 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
                     'yes' => 'see :link y :lonk at 08!:00',
                     'no' => [
                         'one' => 'see :link',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
 
         $root = $this->generateLocaleFilesFrom($arr);
@@ -434,19 +440,20 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
             . '        }' . PHP_EOL
             . '    }' . PHP_EOL
             . '}' . PHP_EOL,
-            (new Generator([]))->generateFromPath($root));
+            (new Generator([]))->generateFromPath($root)
+        );
 
         $this->destroyLocaleFilesFrom($arr, $root);
     }
 
-    function testEscapedEscapeCharacter()
+    public function testEscapedEscapeCharacter()
     {
         $arr = [
             'en' => [
                 'help' => [
                     'test escaped' => 'escaped escape char not !!:touched',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $root = $this->generateLocaleFilesFrom($arr);
@@ -459,12 +466,13 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
             . '        }' . PHP_EOL
             . '    }' . PHP_EOL
             . '}' . PHP_EOL,
-            (new Generator([]))->generateFromPath($root));
+            (new Generator([]))->generateFromPath($root)
+        );
 
         $this->destroyLocaleFilesFrom($arr, $root);
     }
 
-    function testShouldNotTouchHtmlTags()
+    public function testShouldNotTouchHtmlTags()
     {
         $arr = [
             'en' => [
@@ -472,8 +480,8 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
                     'yes' => 'see <a href="mailto:mail@com">',
                     'no' => 'see <a href=":link">',
                     'maybe' => 'It is a <strong>Test</strong> ok!',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $root = $this->generateLocaleFilesFrom($arr);
@@ -488,12 +496,13 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
             . '        }' . PHP_EOL
             . '    }' . PHP_EOL
             . '}' . PHP_EOL,
-            (new Generator([]))->generateFromPath($root));
+            (new Generator([]))->generateFromPath($root)
+        );
 
         $this->destroyLocaleFilesFrom($arr, $root);
     }
 
-    function testPluralization()
+    public function testPluralization()
     {
         $arr = [
             'en' => [
@@ -503,9 +512,9 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
                     'five' => [
                         'three' => 'There is one apple    | There are many apples',
                         'four' => 'There is one apple |     There are many apples',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
 
         $root = $this->generateLocaleFilesFrom($arr);
@@ -524,7 +533,8 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
             . '        }' . PHP_EOL
             . '    }' . PHP_EOL
             . '}' . PHP_EOL,
-            (new Generator(['i18nLib' => 'vue-i18n']))->generateFromPath($root));
+            (new Generator(['i18nLib' => 'vue-i18n']))->generateFromPath($root)
+        );
 
         // vuex-i18n
         $this->assertEquals(
@@ -540,7 +550,8 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
             . '        }' . PHP_EOL
             . '    }' . PHP_EOL
             . '}' . PHP_EOL,
-            (new Generator(['i18nLib' => 'vuex-i18n']))->generateFromPath($root));
+            (new Generator(['i18nLib' => 'vuex-i18n']))->generateFromPath($root)
+        );
 
         $this->destroyLocaleFilesFrom($arr, $root);
     }

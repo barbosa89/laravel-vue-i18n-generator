@@ -60,13 +60,13 @@ jobs:
           composer update --prefer-stable --prefer-dist --no-interaction
 
       - name: Execute tests
-        run: composer test
+        run: "vendor/bin/phpunit --testdox --log-junit=phpunit.report-junit.xml --coverage-clover=phpunit.coverage-clover.xml --coverage-text
 
       - name: Prepare paths for SonarQube analysis
         if: matrix.run-sonarqube-analysis
         run: |
-          sed -i "s|$GITHUB_WORKSPACE|/github/workspace|g" build/logs/clover.xml
-          sed -i "s|$GITHUB_WORKSPACE|/github/workspace|g" build/report.junit.xml
+          sed -i "s|$GITHUB_WORKSPACE|/github/workspace|g" phpunit.coverage-clover.xml
+          sed -i "s|$GITHUB_WORKSPACE|/github/workspace|g" phpunit.report-junit.xml
       - name: Run SonarQube analysis
         uses: sonarsource/sonarcloud-github-action@master
         if: matrix.run-sonarqube-analysis

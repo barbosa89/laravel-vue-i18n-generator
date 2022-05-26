@@ -1,8 +1,12 @@
 <?php
 
-use MartinLindhe\VueInternationalizationGenerator\Generator;
+namespace MartinLindhe\VueInternationalizationGenerator\Tests\Unit;
 
-class GenerateTest extends \PHPUnit_Framework_TestCase
+use InvalidArgumentException;
+use MartinLindhe\VueInternationalizationGenerator\Generator;
+use MartinLindhe\VueInternationalizationGenerator\Tests\TestCase;
+
+class GenerateTest extends TestCase
 {
     private function generateLocaleFilesFrom(array $arr)
     {
@@ -214,13 +218,13 @@ class GenerateTest extends \PHPUnit_Framework_TestCase
         $format = 'es5';
         $arr = [];
 
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid format passed: ' . $format);
+
         $root = $this->generateLocaleFilesFrom($arr);
 
-        try {
-            (new Generator([]))->generateFromPath($root, $format);
-        } catch (RuntimeException $e) {
-            $this->assertEquals('Invalid format passed: ' . $format, $e->getMessage());
-        }
+        (new Generator([]))->generateFromPath($root, $format);
+
         $this->destroyLocaleFilesFrom($arr, $root);
     }
 

@@ -2,9 +2,10 @@
 
 namespace MartinLindhe\VueInternationalizationGenerator\Commands;
 
+use InvalidArgumentException;
 use Illuminate\Console\Command;
-
 use MartinLindhe\VueInternationalizationGenerator\Generator;
+use MartinLindhe\VueInternationalizationGenerator\Constants\Formats;
 
 class GenerateInclude extends Command
 {
@@ -47,7 +48,7 @@ class GenerateInclude extends Command
         }
 
         if (! $this->isValidFormat($format)) {
-            throw new \RuntimeException('Invalid format passed: ' . $format);
+            throw new InvalidArgumentException('Invalid format passed: ' . $format);
         }
 
         if ($multipleFiles || $multipleLocales) {
@@ -96,8 +97,6 @@ class GenerateInclude extends Command
      */
     private function isValidFormat($format)
     {
-        $supportedFormats = ['es6', 'umd', 'json'];
-
-        return in_array($format, $supportedFormats);
+        return in_array($format, Formats::toArray());
     }
 }

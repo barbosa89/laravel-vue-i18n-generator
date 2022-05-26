@@ -2,9 +2,11 @@
 
 namespace MartinLindhe\VueInternationalizationGenerator;
 
-use App;
 use Exception;
 use DirectoryIterator;
+use InvalidArgumentException;
+use Illuminate\Support\Facades\App;
+use MartinLindhe\VueInternationalizationGenerator\Constants\Formats;
 
 class Generator
 {
@@ -50,6 +52,10 @@ class Generator
             throw new Exception('Directory not found: ' . $path);
         }
 
+        if (! in_array($format, Formats::toArray())) {
+            throw new InvalidArgumentException('Invalid format passed: ' . $format);
+        }
+
         $this->langFiles = $langFiles;
 
         $locales = [];
@@ -74,9 +80,7 @@ class Generator
 
             $noExt = $this->removeExtension($fileinfo->getFilename());
             if ($noExt !== '') {
-                if (class_exists('App')) {
-                    App::setLocale($noExt);
-                }
+                App::setLocale($noExt);
 
                 if ($fileinfo->isDir()) {
                     $local = $this->allocateLocaleArray($fileinfo->getRealPath());
@@ -100,7 +104,7 @@ class Generator
         $jsonLocales = json_encode($locales, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . PHP_EOL;
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception('Could not generate JSON, error code '.json_last_error());
+            throw new Exception('Could not generate JSON, error code ' . json_last_error());
         }
 
         // formats other than 'es6' and 'umd' will become plain JSON
@@ -380,6 +384,7 @@ class Generator
     private function removeExtension($filename)
     {
         $pos = mb_strrpos($filename, '.');
+
         if ($pos === false) {
             return $filename;
         }
@@ -394,7 +399,7 @@ class Generator
      */
     private function getUMDModule($body)
     {
-        $js = <<<HEREDOC
+        return <<<HEREDOC
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
         typeof define === 'function' && define.amd ? define(factory) :
@@ -403,8 +408,6 @@ class Generator
     return {$body}
 })));
 HEREDOC;
-
-        return $js;
     }
 
     /**

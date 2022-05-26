@@ -25,8 +25,6 @@ jobs:
             testbench: ^7.0
             run-sonarqube-analysis: true
         exclude:
-          - php: 7.3
-            laravel: ^9.0
           - php: 7.4
             laravel: ^9.0
           - php: 8.0
@@ -46,8 +44,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
-          coverage: none
+          extensions: json, mbstring, pcntl, intl, fileinfo
+          coverage: xdebug
 
       - name: Setup problem matchers
         run: |
@@ -60,13 +58,14 @@ jobs:
           composer update --prefer-stable --prefer-dist --no-interaction
 
       - name: Execute tests
-        run: vendor/bin/phpunit --testdox --log-junit=phpunit.report-junit.xml --coverage-clover=phpunit.coverage-clover.xml --coverage-text
+        run: composer test
 
       - name: Prepare paths for SonarQube analysis
         if: matrix.run-sonarqube-analysis
         run: |
-          sed -i "s|$GITHUB_WORKSPACE|/github/workspace|g" phpunit.coverage-clover.xml
-          sed -i "s|$GITHUB_WORKSPACE|/github/workspace|g" phpunit.report-junit.xml
+          sed -i "s|$GITHUB_WORKSPACE|/github/workspace|g" build/logs/clover.xml
+          sed -i "s|$GITHUB_WORKSPACE|/github/workspace|g" build/report.junit.xml
+
       - name: Run SonarQube analysis
         uses: sonarsource/sonarcloud-github-action@master
         if: matrix.run-sonarqube-analysis

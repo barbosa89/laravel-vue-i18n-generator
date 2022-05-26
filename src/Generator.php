@@ -245,9 +245,8 @@ class Generator
 
                 if (gettype($tmp) !== "array") {
                     throw new Exception('Unexpected data while processing ' . $fileName);
-
-                    continue;
                 }
+
                 if ($lastLocale !== false) {
                     $root = realpath(base_path() . $this->config['langPath'] . DIRECTORY_SEPARATOR . $lastLocale);
                     $filePath = $this->removeExtension(str_replace('\\', '_', ltrim(str_replace($root, '', realpath($fileName)), '\\')));

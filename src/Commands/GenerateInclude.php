@@ -25,8 +25,8 @@ class GenerateInclude extends Command
 
     /**
      * Execute the console command.
-     * @return mixed
-     * @throws \Exception
+     * @return int
+     * @throws InvalidArgumentException
      */
     public function handle(): int
     {
@@ -44,7 +44,7 @@ class GenerateInclude extends Command
 
         if ($umd) {
             // if the --umd option is set, set the $format to 'umd'
-            $format = 'umd';
+            $format = Formats::UMD;
         }
 
         if (! $this->isValidFormat($format)) {

@@ -11,7 +11,7 @@ return [
     |
     */
 
-    'langPath' => '/resources/lang',
+    'langPath' => env('VUE_I18N_OUTPUT_PATH', '/resources/lang'),
 
     /*
     |--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ return [
     | after generating json files.
     |
     */
-    'showOutputMessages' => false,
+    'showOutputMessages' => true,
 
     /*
     |--------------------------------------------------------------------------

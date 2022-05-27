@@ -9,6 +9,10 @@ use MartinLindhe\VueInternationalizationGenerator\Constants\Formats;
 
 class GenerateInclude extends Command
 {
+    public const SUCCESS = 0;
+    public const FAILURE = 1;
+    public const INVALID = 2;
+
     /**
      * The name and signature of the console command.
      *

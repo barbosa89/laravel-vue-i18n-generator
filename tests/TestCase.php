@@ -11,7 +11,11 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-        if (!file_exists(resource_path('js'))) {
+        if ($this->version() >= 9) {
+            config()->set('vue-i18n-generator.langPath', '/lang');
+        }
+
+        if (! file_exists(resource_path('js'))) {
             mkdir(resource_path('js'));
         }
 
@@ -19,10 +23,18 @@ class TestCase extends Orchestra
             unlink(base_path(config('vue-i18n-generator.jsFile')));
         }
     }
+
     protected function getPackageProviders($app)
     {
         return [
             GeneratorProvider::class,
         ];
+    }
+
+    private function version(): int
+    {
+        $version = explode('.', $this->app->version());
+
+        return (int) array_shift($version);
     }
 }

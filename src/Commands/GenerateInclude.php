@@ -28,7 +28,7 @@ class GenerateInclude extends Command
      * @return mixed
      * @throws \Exception
      */
-    public function handle()
+    public function handle(): int
     {
         $root = base_path() . config('vue-i18n-generator.langPath');
         $config = config('vue-i18n-generator');
@@ -59,7 +59,7 @@ class GenerateInclude extends Command
                 $this->info("Written to : " . $files);
             }
 
-            return;
+            return self::SUCCESS;
         }
 
         if ($langFiles) {
@@ -69,13 +69,15 @@ class GenerateInclude extends Command
         $data = (new Generator($config))
             ->generateFromPath($root, $format, $withVendor, $langFiles);
 
-
         $jsFile = $this->getFileName($fileName);
+
         file_put_contents($jsFile, $data);
 
         if ($config['showOutputMessages']) {
             $this->info("Written to : " . $jsFile);
         }
+
+        return self::SUCCESS;
     }
 
     /**

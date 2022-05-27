@@ -3,8 +3,8 @@
 namespace MartinLindhe\VueInternationalizationGenerator\Tests\Unit;
 
 use InvalidArgumentException;
-use Illuminate\Console\Command;
 use MartinLindhe\VueInternationalizationGenerator\Tests\TestCase;
+use MartinLindhe\VueInternationalizationGenerator\Commands\GenerateInclude;
 
 class GenerateIncludeCommandTest extends TestCase
 {
@@ -12,7 +12,7 @@ class GenerateIncludeCommandTest extends TestCase
     {
         $this->artisan('vue-i18n:generate')
             ->expectsOutput('Written to : ' . base_path() . config('vue-i18n-generator.jsFile'))
-            ->assertExitCode(Command::SUCCESS);
+            ->assertExitCode(GenerateInclude::SUCCESS);
     }
 
     public function test_generate_lang_files_with_umd_format(): void
@@ -21,7 +21,7 @@ class GenerateIncludeCommandTest extends TestCase
             '--umd' => true,
         ])
         ->expectsOutput('Written to : ' . base_path() . config('vue-i18n-generator.jsFile'))
-        ->assertExitCode(Command::SUCCESS);
+        ->assertExitCode(GenerateInclude::SUCCESS);
     }
 
     public function test_thrown_exception_with_invalid_format(): void
@@ -38,7 +38,7 @@ class GenerateIncludeCommandTest extends TestCase
         $this->artisan('vue-i18n:generate', [
             '--multi' => true,
         ])
-        ->assertExitCode(Command::SUCCESS);
+        ->assertExitCode(GenerateInclude::SUCCESS);
     }
 
     public function test_generate_lang_files_by_name(): void
@@ -47,7 +47,7 @@ class GenerateIncludeCommandTest extends TestCase
             '--lang-files' => 'validations,passwords',
         ])
         ->expectsOutput('Written to : ' . base_path() . config('vue-i18n-generator.jsFile'))
-        ->assertExitCode(Command::SUCCESS);
+        ->assertExitCode(GenerateInclude::SUCCESS);
     }
 
     public function test_generate_lang_file_with_custon_file_name(): void
@@ -58,6 +58,6 @@ class GenerateIncludeCommandTest extends TestCase
             '--file-name' => $fileName,
         ])
         ->expectsOutput('Written to : ' . base_path() . $fileName)
-        ->assertExitCode(Command::SUCCESS);
+        ->assertExitCode(GenerateInclude::SUCCESS);
     }
 }

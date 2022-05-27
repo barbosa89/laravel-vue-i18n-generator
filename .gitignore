@@ -10,4 +10,4 @@ testbench.yaml
 vendor
 node_modules
 .php-cs-fixer.cache
-configure.php
+.phpintel

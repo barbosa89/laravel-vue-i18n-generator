@@ -1,12 +1,8 @@
 ## About
 
-**NO LONGER MAINTAINED**
+[![run-tests](https://github.com/barbosa89/laravel-vue-i18n-generator/actions/workflows/run-tests.yml/badge.svg)](https://github.com/barbosa89/laravel-vue-i18n-generator/actions/workflows/run-tests.yml)
 
-
-[![Build Status](https://travis-ci.org/martinlindhe/laravel-vue-i18n-generator.png?branch=master)](https://travis-ci.org/martinlindhe/laravel-vue-i18n-generator)
-
-
-Laravel 5 package that allows you to share your [Laravel localizations](https://laravel.com/docs/5.8/localization)
+Laravel package that allows you to share your [Laravel localizations](https://laravel.com/docs/9.x/localization)
 with your [vue](http://vuejs.org/) front-end, using [vue-i18n](https://github.com/kazupon/vue-i18n) or [vuex-i18n](https://github.com/dkfbasel/vuex-i18n).
 
 
@@ -14,11 +10,10 @@ with your [vue](http://vuejs.org/) front-end, using [vue-i18n](https://github.co
 
 Configuration paths have changed in Laravel 5.7, in order for this package to function properly you need to configure correct paths for jsPath and jsFile in your `config\vue-i18n-generator.php`.
 
-
 ## Install the package
 
 In your project:
-```composer require martinlindhe/laravel-vue-i18n-generator --dev```
+```composer require barbosa89/laravel-vue-i18n-generator --dev```
 
 ### For Laravel 5.4 and below:
 For older versions of the framework:
@@ -35,6 +30,18 @@ Next, publish the package default config:
 php artisan vendor:publish --provider="MartinLindhe\VueInternationalizationGenerator\GeneratorProvider"
 ```
 
+### Laravel 9 configuration
+
+The new version of the framework moved the language folder out of the resources folder, so you need to update the **langPath** in the config file:
+
+```
+'langPath' => env('VUE_I18N_OUTPUT_PATH', '/lang'),
+```
+
+You can also set the environment variable to assign the path.
+
+VUE_I18N_OUTPUT_PATH='/lang'
+
 ## Using vue-i18n
 
 Next, you need to install one out of two supported VueJs i18n libraries. We support [vue-i18n](https://github.com/kazupon/vue-i18n) as default library. Beside that we also support [vuex-i18n](https://github.com/dkfbasel/vuex-i18n).
@@ -42,7 +49,7 @@ Next, you need to install one out of two supported VueJs i18n libraries. We supp
 When you go with the default option, you only need to install the library through your favorite package manager.
 ### vue-i18n
 ```
-npm i --save vue-i18n
+npm i --save-dev vue-i18n
 ```
 
 ```
@@ -103,7 +110,7 @@ Object.keys(Locales).forEach(function (lang) {
 
 ### vuex-i18n
 ```
-npm i --save vuex-i18n
+npm i --save-dev vuex-i18n
 ```
 
 ```

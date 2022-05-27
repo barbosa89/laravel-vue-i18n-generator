@@ -1,36 +1,14 @@
-## About
+# Laravel vue-i18n generator
 
 [![run-tests](https://github.com/barbosa89/laravel-vue-i18n-generator/actions/workflows/run-tests.yml/badge.svg)](https://github.com/barbosa89/laravel-vue-i18n-generator/actions/workflows/run-tests.yml)
+<a href="https://packagist.org/packages/barbosa89/laravel-vue-i18n-generator"><img src="https://img.shields.io/packagist/v/barbosa89/laravel-vue-i18n-generator" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/barbosa89/laravel-vue-i18n-generator"><img src="https://img.shields.io/packagist/l/barbosa89/laravel-vue-i18n-generator" alt="License"></a>
 
 Laravel package that allows you to share your [Laravel localizations](https://laravel.com/docs/9.x/localization)
-with your [vue](http://vuejs.org/) front-end, using [vue-i18n](https://github.com/kazupon/vue-i18n) or [vuex-i18n](https://github.com/dkfbasel/vuex-i18n).
+with your [VueJS](http://vuejs.org/) front-end, using [vue-i18n](https://github.com/kazupon/vue-i18n) or [vuex-i18n](https://github.com/dkfbasel/vuex-i18n). Tested versions: Laravel >=6.x.
 
 
-## Laravel 5.7 notice!
-
-Configuration paths have changed in Laravel 5.7, in order for this package to function properly you need to configure correct paths for jsPath and jsFile in your `config\vue-i18n-generator.php`.
-
-## Install the package
-
-In your project:
-```composer require barbosa89/laravel-vue-i18n-generator --dev```
-
-### For Laravel 5.4 and below:
-For older versions of the framework:
-
-Register the service provider in ```config/app.php```
-
-```php
-MartinLindhe\VueInternationalizationGenerator\GeneratorProvider::class,
-```
-
-Next, publish the package default config:
-
-```
-php artisan vendor:publish --provider="MartinLindhe\VueInternationalizationGenerator\GeneratorProvider"
-```
-
-### Laravel 9 configuration
+## Laravel 9 notice!
 
 The new version of the framework moved the language folder out of the resources folder, so you need to update the **langPath** in the config file:
 
@@ -40,7 +18,23 @@ The new version of the framework moved the language folder out of the resources 
 
 You can also set the environment variable to assign the path.
 
+```
 VUE_I18N_OUTPUT_PATH='/lang'
+```
+
+## Install the package
+
+In your project:
+
+```
+composer require barbosa89/laravel-vue-i18n-generator --dev
+```
+
+Next, publish the package default config:
+
+```
+php artisan vendor:publish --provider="MartinLindhe\VueInternationalizationGenerator\GeneratorProvider"
+```
 
 ## Using vue-i18n
 
@@ -61,7 +55,7 @@ Then generate the include file with
 php artisan vue-i18n:generate
 ```
 
-Assuming you are using a recent version of vue-i18n (>=6.x), adjust your vue app with something like:
+Assuming you are using a recent version of vue-i18n (>=6.x, <=8.x), adjust your vue app with something like:
 ```js
 import Vue from 'vue';
 import VueInternationalization from 'vue-i18n';
@@ -227,13 +221,6 @@ Vue template:
     <p>{{ $t('message.hello', {name: 'visitor'}) }}</p>
 </div>
 ```
-
-
-## Notices
-
-- The generated file is an ES6 module.
-
-The more sophisticated pluralization localization as described [here](https://laravel.com/docs/5.5/localization#pluralization) is not supported since neither vue-i18n or vuex-i18n support this.
 
 # License
 
